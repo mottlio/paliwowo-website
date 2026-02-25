@@ -76,7 +76,7 @@ const T = {
   },
 } as const;
 
-type Translations = (typeof T)['en'];
+type Translations = (typeof T)['en'] | (typeof T)['pl'];
 
 // ─── useLanguage ──────────────────────────────────────────────────────────────
 function useLanguage(): [Lang, (l: Lang) => void] {
