@@ -185,9 +185,9 @@ function Navbar({
 // ─── PhoneMockup ──────────────────────────────────────────────────────────────
 function PhoneMockup() {
   return (
-    <div className="relative mx-auto" style={{ width: '310px', paddingBottom: '40px' }}>
+    <div className="relative mx-auto" style={{ width: '400px', paddingBottom: '80px' }}>
       {/* Second phone — behind, offset to bottom-right */}
-      <div className="absolute left-8 top-8 z-0 w-[260px] opacity-70 sm:w-[280px]">
+      <div className="absolute left-24 top-20 z-0 w-[260px] opacity-70 sm:w-[280px]">
         <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-[var(--blue-500)]/40 bg-[var(--blue-900)] shadow-xl">
           <div className="flex items-center justify-between bg-[var(--blue-900)] px-5 pb-1 pt-3">
             <span className="text-[10px] font-semibold text-[var(--blue-300)]">9:41</span>
