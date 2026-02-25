@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+:root {
+  --brand-blue: #0B2757;
+  --brand-yellow: #FCD73D;
+  --blue-900: #081C40;
+  --blue-700: #0B2757;
+  --blue-500: #1F4E8C;
+  --blue-300: #6E8FBF;
+  --blue-100: #E7EEF8;
+  --yellow-600: #E6C233;
+  --yellow-500: #FCD73D;
+  --yellow-300: #FFE98A;
+  --yellow-100: #FFF7D6;
+  --white: #FFFFFF;
+  --gray-light: #F5F7FA;
+  --gray-medium: #8A94A6;
+  --gray-dark: #2A2F3A;
+  --black-soft: #111827;
+}
+
+html {
+  scroll-behavior: smooth;
+}
