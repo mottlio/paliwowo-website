@@ -1,0 +1,822 @@
+# paliwowo Landing Page — Implementation Plan
+
+> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+
+**Goal:** Replace the current plain HTML/CSS/JS static page with a Next.js 15 (App Router) + TypeScript + Tailwind CSS v4 landing page, exported as a static site for Netlify hosting.
+
+**Architecture:** Single `app/page.tsx` with all inline components. Client-side IP detection (ipapi.co) for language default. Static export (`output: 'export'`) targeting `out/` for Netlify.
+
+**Tech Stack:** Next.js 15, React 19, TypeScript 5, Tailwind CSS v4, next/image (unoptimized), Netlify
+
+---
+
+### Task 1: Create project config files
+
+**Files:**
+- Create: `package.json`
+- Create: `next.config.ts`
+- Create: `tsconfig.json`
+- Create: `postcss.config.mjs`
+
+**Step 1: Create `package.json`**
+
+```json
+{
+  "name": "paliwowo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^15.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
+```
+
+**Step 2: Create `next.config.ts`**
+
+```ts
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+};
+
+export default nextConfig;
+```
+
+**Step 3: Create `tsconfig.json`**
+
+```json
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "paths": { "@/*": ["./*"] }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+```
+
+**Step 4: Create `postcss.config.mjs`**
+
+```js
+const config = {
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
+};
+export default config;
+```
+
+**Step 5: Install dependencies**
+
+Run: `npm install`
+Expected: `node_modules/` created, `package-lock.json` written, no errors.
+
+**Step 6: Commit**
+
+```bash
+git add package.json next.config.ts tsconfig.json postcss.config.mjs package-lock.json
+git commit -m "chore: bootstrap Next.js 15 + Tailwind v4 project"
+```
+
+---
+
+### Task 2: App globals and layout
+
+**Files:**
+- Create: `app/globals.css`
+- Create: `app/layout.tsx`
+
+**Step 1: Create `app/globals.css`**
+
+```css
+@import "tailwindcss";
+
+:root {
+  --brand-blue: #0B2757;
+  --brand-yellow: #FCD73D;
+  --blue-900: #081C40;
+  --blue-700: #0B2757;
+  --blue-500: #1F4E8C;
+  --blue-300: #6E8FBF;
+  --blue-100: #E7EEF8;
+  --yellow-600: #E6C233;
+  --yellow-500: #FCD73D;
+  --yellow-300: #FFE98A;
+  --yellow-100: #FFF7D6;
+  --white: #FFFFFF;
+  --gray-light: #F5F7FA;
+  --gray-medium: #8A94A6;
+  --gray-dark: #2A2F3A;
+  --black-soft: #111827;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+```
+
+**Step 2: Create `app/layout.tsx`**
+
+```tsx
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin', 'latin-ext'] });
+
+export const metadata: Metadata = {
+  title: 'paliwowo — Fuel prices and discounts nearby',
+  description:
+    'Compare fuel prices nearby including loyalty-card discounts. Community-powered fuel prices for Poland.',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={inter.className}>
+      <body className="bg-[var(--blue-900)] antialiased">{children}</body>
+    </html>
+  );
+}
+```
+
+**Step 3: Commit**
+
+```bash
+git add app/globals.css app/layout.tsx
+git commit -m "feat: add globals.css with CSS variables and root layout"
+```
+
+---
+
+### Task 3: Copy assets to public/
+
+**Step 1: Create `public/` directory and copy images**
+
+Run:
+```bash
+mkdir -p public
+cp assets/paliwowo_logo.png public/paliwowo_logo.png
+cp assets/paliwowo_background_image.jpg public/paliwowo_background_image.jpg
+cp assets/paliwowo_app_screenshot_1.PNG public/paliwowo_app_screenshot_1.PNG
+cp assets/paliwowo_app_screenshot_2.PNG public/paliwowo_app_screenshot_2.PNG
+cp assets/paliwowo_app_screenshot_3.PNG public/paliwowo_app_screenshot_3.PNG
+```
+
+Expected: 5 files in `public/`.
+
+**Step 2: Verify**
+
+Run: `ls public/`
+Expected: all 5 files listed.
+
+**Step 3: Commit**
+
+```bash
+git add public/
+git commit -m "chore: copy app assets to public/ for Next.js static serving"
+```
+
+---
+
+### Task 4: Write `app/page.tsx`
+
+**Files:**
+- Create: `app/page.tsx`
+
+**Step 1: Create `app/page.tsx` with the complete content below**
+
+```tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+type Lang = 'en' | 'pl';
+
+// ─── Translations ─────────────────────────────────────────────────────────────
+const T = {
+  en: {
+    heroTitle: 'Fuel prices and discounts nearby, powered by drivers',
+    heroSubtitle:
+      'paliwowo helps drivers in Poland compare fuel prices nearby, including loyalty-card discounts. Add prices quickly via voice, photo, or manual update and help the whole community save money.',
+    heroTrust: 'Launching soon in Poland.',
+    heroCta1: 'Get the app',
+    heroCta2: 'How it works',
+    f1Title: 'Compare nearby stations',
+    f1Body: 'See fuel prices around you and quickly identify better deals.',
+    f2Title: 'Include discounts',
+    f2Body: 'Compare real prices with loyalty programs and retailer promotions.',
+    f3Title: 'Built for fast reporting',
+    f3Body: 'Contribute prices with minimal effort while on the move.',
+    howTitle: 'How it works',
+    step1: 'Check prices near you',
+    step2: 'Add / confirm a price in seconds',
+    step3: 'Everyone saves money',
+    contribTitle: 'Become a paliwowo contributor',
+    contribBody:
+      'Join early contributors and help build the most useful fuel-price community in Poland.',
+    contribB1: 'Report prices from your local stations',
+    contribB2: 'Improve data quality with quick corrections',
+    contribB3: 'Help other drivers make better fuel decisions',
+    contribCta: 'I want to contribute',
+    ctaHeadline: 'Be first to know when paliwowo launches',
+    ctaPlaceholder: 'Your email address',
+    ctaButton: 'Notify me',
+    ctaSuccess: "You're on the list! We'll notify you when paliwowo launches.",
+    ctaPrivacy: 'No spam. Unsubscribe anytime.',
+    soonSuffix: 'soon',
+    footerTagline: 'Community-powered fuel prices for Poland.',
+    footerCopy: '© paliwowo — coming soon',
+  },
+  pl: {
+    heroTitle: 'Ceny paliw i rabaty w Twojej okolicy, tworzone przez kierowców',
+    heroSubtitle:
+      'paliwowo pomaga kierowcom w Polsce porównywać ceny paliw w pobliżu, także z uwzględnieniem rabatów i kart lojalnościowych. Dodawaj ceny szybko głosem, zdjęciem lub ręcznie i pomóż całej społeczności oszczędzać.',
+    heroTrust: 'Już wkrótce w Polsce.',
+    heroCta1: 'Pobierz aplikację',
+    heroCta2: 'Jak to działa',
+    f1Title: 'Porównuj stacje w pobliżu',
+    f1Body: 'Sprawdzaj ceny paliw dookoła i szybko znajdź korzystniejszą opcję.',
+    f2Title: 'Uwzględniaj rabaty',
+    f2Body: 'Porównuj realne ceny z programami lojalnościowymi i promocjami stacji.',
+    f3Title: 'Szybkie raportowanie',
+    f3Body: 'Dodawaj ceny przy minimalnej liczbie kroków, także w ruchu.',
+    howTitle: 'Jak to działa',
+    step1: 'Sprawdź ceny w pobliżu',
+    step2: 'Dodaj / potwierdź cenę w kilka sekund',
+    step3: 'Wszyscy oszczędzają',
+    contribTitle: 'Zostań współtwórcą paliwowo',
+    contribBody:
+      'Dołącz do pierwszych współtwórców i pomóż budować najbardziej użyteczną społeczność paliwową w Polsce.',
+    contribB1: 'Dodawaj ceny z lokalnych stacji',
+    contribB2: 'Poprawiaj jakość danych szybkimi korektami',
+    contribB3: 'Pomagaj kierowcom podejmować lepsze decyzje',
+    contribCta: 'Chcę współtworzyć',
+    ctaHeadline: 'Bądź pierwszy, gdy paliwowo wystartuje',
+    ctaPlaceholder: 'Twój adres e-mail',
+    ctaButton: 'Powiadom mnie',
+    ctaSuccess: 'Jesteś na liście! Powiadomimy Cię gdy paliwowo wystartuje.',
+    ctaPrivacy: 'Bez spamu. Możesz zrezygnować w dowolnym momencie.',
+    soonSuffix: 'wkrótce',
+    footerTagline: 'Ceny paliw tworzone przez społeczność kierowców.',
+    footerCopy: '© paliwowo — wkrótce',
+  },
+} as const;
+
+type Translations = (typeof T)['en'];
+
+// ─── useLanguage ──────────────────────────────────────────────────────────────
+function useLanguage(): [Lang, (l: Lang) => void] {
+  const [lang, setLangState] = useState<Lang>('en');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('lang') as Lang | null;
+    if (saved === 'pl' || saved === 'en') {
+      setLangState(saved);
+      document.documentElement.lang = saved;
+      return;
+    }
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 1800);
+    fetch('https://ipapi.co/json/', { signal: ctrl.signal })
+      .then((r) => r.json())
+      .then((d: { country_code?: string }) => {
+        const detected: Lang = d?.country_code === 'PL' ? 'pl' : 'en';
+        setLangState(detected);
+        document.documentElement.lang = detected;
+      })
+      .catch(() => {
+        const fallback: Lang = navigator.language.toLowerCase().startsWith('pl') ? 'pl' : 'en';
+        setLangState(fallback);
+        document.documentElement.lang = fallback;
+      })
+      .finally(() => clearTimeout(timer));
+  }, []);
+
+  const setLang = (l: Lang) => {
+    setLangState(l);
+    localStorage.setItem('lang', l);
+    document.documentElement.lang = l;
+  };
+
+  return [lang, setLang];
+}
+
+// ─── Navbar ───────────────────────────────────────────────────────────────────
+function Navbar({
+  lang,
+  setLang,
+  t,
+}: {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  t: Translations;
+}) {
+  return (
+    <nav className="sticky top-0 z-50 border-b border-[var(--blue-500)]/30 bg-[var(--blue-900)]/90 backdrop-blur-md">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-4 py-3 sm:px-6">
+        <a
+          href="#"
+          className="flex items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)]"
+        >
+          <Image
+            src="/paliwowo_logo.png"
+            alt="paliwowo logo"
+            width={36}
+            height={36}
+            className="rounded-lg"
+          />
+          <span className="text-lg font-bold tracking-tight text-[var(--white)]">paliwowo</span>
+        </a>
+
+        <div className="flex items-center gap-3">
+          <div
+            role="group"
+            aria-label="Language"
+            className="flex items-center gap-0.5 rounded-xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)]/50 p-1"
+          >
+            {(['pl', 'en'] as Lang[]).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                aria-pressed={lang === l}
+                className={`rounded-lg px-3 py-1 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)] ${
+                  lang === l
+                    ? 'bg-[var(--yellow-500)] text-[var(--blue-900)]'
+                    : 'text-[var(--blue-300)] hover:text-[var(--white)]'
+                }`}
+              >
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          <div className="hidden items-center gap-2 sm:flex">
+            {(['App Store', 'Google Play'] as const).map((s) => (
+              <button
+                key={s}
+                disabled
+                aria-disabled="true"
+                className="cursor-not-allowed rounded-xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)]/40 px-3 py-1.5 text-xs font-medium text-[var(--blue-300)] opacity-60"
+              >
+                {s} ({t.soonSuffix})
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+// ─── PhoneMockup ──────────────────────────────────────────────────────────────
+function PhoneMockup() {
+  return (
+    <div className="relative mx-auto w-[260px] sm:w-[280px]">
+      <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-[var(--blue-500)]/60 bg-[var(--blue-900)] shadow-2xl">
+        {/* Status bar */}
+        <div className="flex items-center justify-between bg-[var(--blue-900)] px-5 pb-1 pt-3">
+          <span className="text-[10px] font-semibold text-[var(--blue-300)]">9:41</span>
+          <div className="h-3 w-16 rounded-full bg-[var(--blue-700)]" />
+          <div className="flex items-center gap-1">
+            <div className="h-2 w-2 rounded-full bg-[var(--blue-300)]" />
+            <div className="h-2 w-2 rounded-full bg-[var(--blue-300)]" />
+          </div>
+        </div>
+        {/* Screenshot */}
+        <div className="relative h-[480px] w-full overflow-hidden">
+          <Image
+            src="/paliwowo_app_screenshot_1.PNG"
+            alt="paliwowo app showing nearby fuel prices"
+            fill
+            className="object-cover object-top"
+          />
+        </div>
+        {/* Home indicator */}
+        <div className="flex justify-center bg-[var(--blue-900)] py-2">
+          <div className="h-1 w-24 rounded-full bg-[var(--blue-500)]/60" />
+        </div>
+      </div>
+      {/* Floating price pill */}
+      <div className="absolute -right-6 top-16 rounded-2xl border border-[var(--yellow-500)]/30 bg-[var(--blue-700)] px-3 py-2 shadow-lg">
+        <p className="text-[10px] font-medium text-[var(--blue-300)]">Orlen</p>
+        <p className="text-base font-bold text-[var(--yellow-500)]">6.89 zł</p>
+      </div>
+      {/* Floating discount badge */}
+      <div className="absolute -left-6 bottom-24 rounded-2xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)] px-3 py-2 shadow-lg">
+        <p className="text-[10px] font-medium text-[var(--blue-300)]">Karta Żabki</p>
+        <p className="text-sm font-bold text-green-400">−0.20 zł/l</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+function Hero({ t }: { t: Translations }) {
+  return (
+    <section id="hero" className="relative min-h-[85vh] overflow-hidden">
+      <Image
+        src="/paliwowo_background_image.jpg"
+        alt=""
+        fill
+        priority
+        className="object-cover object-center"
+      />
+      {/* Dark blue gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--blue-900)]/95 via-[var(--blue-700)]/85 to-[var(--blue-500)]/60" />
+      {/* Vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(8,28,64,0.75)_100%)]" />
+      <div className="relative mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">
+        <div className="flex flex-col gap-6">
+          <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-[var(--white)] sm:text-5xl lg:text-[3.25rem]">
+            {t.heroTitle}
+          </h1>
+          <p className="max-w-lg text-lg leading-relaxed text-[var(--blue-100)]/90">
+            {t.heroSubtitle}
+          </p>
+          <p className="text-sm font-semibold text-[var(--yellow-300)]">{t.heroTrust}</p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="#cta"
+              className="rounded-2xl bg-[var(--yellow-500)] px-6 py-3 text-sm font-bold text-[var(--blue-900)] transition-all duration-150 hover:bg-[var(--yellow-300)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--blue-900)]"
+            >
+              {t.heroCta1}
+            </a>
+            <a
+              href="#how"
+              className="rounded-2xl border border-[var(--blue-100)]/30 bg-[var(--white)]/10 px-6 py-3 text-sm font-bold text-[var(--white)] backdrop-blur-sm transition-all duration-150 hover:bg-[var(--white)]/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--white)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--blue-900)]"
+            >
+              {t.heroCta2}
+            </a>
+          </div>
+        </div>
+        <div className="flex justify-center lg:justify-end">
+          <PhoneMockup />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Icons ────────────────────────────────────────────────────────────────────
+function MapPinIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+function PercentIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="19" y1="5" x2="5" y2="19" />
+      <circle cx="6.5" cy="6.5" r="2.5" />
+      <circle cx="17.5" cy="17.5" r="2.5" />
+    </svg>
+  );
+}
+
+function ZapIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  );
+}
+
+// ─── Features ─────────────────────────────────────────────────────────────────
+const ICONS = [MapPinIcon, PercentIcon, ZapIcon];
+
+function Features({ t }: { t: Translations }) {
+  const cards = [
+    { title: t.f1Title, body: t.f1Body },
+    { title: t.f2Title, body: t.f2Body },
+    { title: t.f3Title, body: t.f3Body },
+  ];
+  return (
+    <section id="features" className="bg-[var(--blue-900)] py-20">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {cards.map((card, i) => {
+            const Icon = ICONS[i];
+            return (
+              <article
+                key={i}
+                className="rounded-2xl border border-[var(--blue-500)]/30 bg-[var(--blue-700)]/40 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-[var(--blue-500)]/60 hover:shadow-xl hover:shadow-[var(--blue-900)]/50"
+              >
+                <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--yellow-500)]/15 text-[var(--yellow-500)]">
+                  <Icon />
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-[var(--white)]">{card.title}</h3>
+                <p className="text-sm leading-relaxed text-[var(--blue-300)]">{card.body}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── HowItWorks ───────────────────────────────────────────────────────────────
+function HowItWorks({ t }: { t: Translations }) {
+  const steps = [t.step1, t.step2, t.step3];
+  return (
+    <section id="how" className="bg-[var(--blue-700)] py-20">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
+        <h2 className="mb-12 text-center text-3xl font-bold text-[var(--white)]">{t.howTitle}</h2>
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+          {steps.map((step, i) => (
+            <div key={i} className="flex flex-col items-center gap-4 text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-[var(--yellow-500)] text-xl font-extrabold text-[var(--yellow-500)]">
+                {i + 1}
+              </div>
+              <p className="text-base font-medium text-[var(--blue-100)]">{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Contributor ──────────────────────────────────────────────────────────────
+function Contributor({ t }: { t: Translations }) {
+  return (
+    <section id="contribute" className="bg-[var(--blue-900)] py-20">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
+        <div className="overflow-hidden rounded-2xl border border-[var(--blue-500)]/30 bg-[var(--blue-700)]/40">
+          <div className="h-1.5 w-full bg-[var(--yellow-500)]" />
+          <div className="p-8 sm:p-10">
+            <h2 className="mb-4 text-2xl font-bold text-[var(--white)] sm:text-3xl">
+              {t.contribTitle}
+            </h2>
+            <p className="mb-6 max-w-2xl text-base leading-relaxed text-[var(--blue-100)]/80">
+              {t.contribBody}
+            </p>
+            <ul className="mb-8 space-y-3">
+              {[t.contribB1, t.contribB2, t.contribB3].map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[var(--yellow-500)]/20">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--yellow-500)]" />
+                  </span>
+                  <span className="text-sm text-[var(--blue-100)]">{b}</span>
+                </li>
+              ))}
+            </ul>
+            <a
+              href="#cta"
+              className="inline-block rounded-2xl bg-[var(--yellow-500)] px-6 py-3 text-sm font-bold text-[var(--blue-900)] transition-all duration-150 hover:bg-[var(--yellow-300)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--blue-700)]"
+            >
+              {t.contribCta}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── FinalCTA ─────────────────────────────────────────────────────────────────
+function FinalCTA({
+  t,
+  email,
+  setEmail,
+  submitted,
+  setSubmitted,
+}: {
+  t: Translations;
+  email: string;
+  setEmail: (v: string) => void;
+  submitted: boolean;
+  setSubmitted: (v: boolean) => void;
+}) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email.trim()) setSubmitted(true);
+  };
+  return (
+    <section id="cta" className="bg-[var(--blue-700)] py-24">
+      <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6">
+        <h2 className="mb-2 text-3xl font-bold text-[var(--white)] sm:text-4xl">
+          {t.ctaHeadline}
+        </h2>
+        {submitted ? (
+          <div className="mx-auto mt-8 max-w-md rounded-2xl border border-green-500/30 bg-green-500/10 px-6 py-4">
+            <p className="text-sm font-medium text-green-300">{t.ctaSuccess}</p>
+          </div>
+        ) : (
+          <form
+            onSubmit={handleSubmit}
+            className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
+          >
+            <input
+              type="email"
+              required
+              placeholder={t.ctaPlaceholder}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1 rounded-2xl border border-[var(--blue-500)]/50 bg-[var(--blue-900)]/60 px-4 py-3 text-sm text-[var(--white)] placeholder-[var(--blue-300)] focus:border-[var(--yellow-500)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow-500)]/30"
+            />
+            <button
+              type="submit"
+              className="rounded-2xl bg-[var(--yellow-500)] px-6 py-3 text-sm font-bold text-[var(--blue-900)] transition-all duration-150 hover:bg-[var(--yellow-300)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)]"
+            >
+              {t.ctaButton}
+            </button>
+          </form>
+        )}
+        <p className="mt-4 text-xs text-[var(--blue-300)]">{t.ctaPrivacy}</p>
+        <div className="mt-10 flex justify-center gap-3">
+          {(['App Store', 'Google Play'] as const).map((s) => (
+            <button
+              key={s}
+              disabled
+              aria-disabled="true"
+              className="cursor-not-allowed rounded-2xl border border-[var(--blue-500)]/40 bg-[var(--blue-900)]/60 px-5 py-2.5 text-sm font-medium text-[var(--blue-300)] opacity-60"
+            >
+              {s} ({t.soonSuffix})
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Footer ───────────────────────────────────────────────────────────────────
+function Footer({ t }: { t: Translations }) {
+  return (
+    <footer className="border-t border-[var(--blue-500)]/20 bg-[var(--blue-900)] py-12">
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 px-4 text-center sm:px-6">
+        <div className="flex items-center gap-2.5">
+          <Image
+            src="/paliwowo_logo.png"
+            alt="paliwowo"
+            width={32}
+            height={32}
+            className="rounded-lg opacity-80"
+          />
+          <span className="text-sm font-bold text-[var(--blue-100)]">paliwowo</span>
+        </div>
+        <p className="text-sm text-[var(--blue-300)]">{t.footerTagline}</p>
+        <p className="text-xs text-[var(--gray-medium)]">{t.footerCopy}</p>
+      </div>
+    </footer>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+export default function HomePage() {
+  const [lang, setLang] = useLanguage();
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const t = T[lang];
+
+  return (
+    <>
+      <Navbar lang={lang} setLang={setLang} t={t} />
+      <main>
+        <Hero t={t} />
+        <Features t={t} />
+        <HowItWorks t={t} />
+        <Contributor t={t} />
+        <FinalCTA
+          t={t}
+          email={email}
+          setEmail={setEmail}
+          submitted={submitted}
+          setSubmitted={setSubmitted}
+        />
+      </main>
+      <Footer t={t} />
+    </>
+  );
+}
+```
+
+**Step 2: Run dev server to visually verify**
+
+Run: `npm run dev`
+Open: http://localhost:3000
+
+Verify checklist:
+- [ ] Navbar: logo, PL/EN toggle, disabled store buttons
+- [ ] Hero: background image visible with dark overlay, headline, phone mockup with screenshot
+- [ ] Features: 3 cards with icons, hover lift effect
+- [ ] How it works: 3 numbered steps
+- [ ] Contributor: yellow top stripe, bullet list, CTA button
+- [ ] Final CTA: email form, success message on submit
+- [ ] Footer: logo, tagline, copyright
+- [ ] PL/EN toggle switches all text instantly
+- [ ] Smooth scroll works on anchor links (`#how`, `#cta`)
+
+Stop dev server (`Ctrl+C`) when done.
+
+**Step 3: Commit**
+
+```bash
+git add app/page.tsx
+git commit -m "feat: add complete bilingual landing page"
+```
+
+---
+
+### Task 5: Create `netlify.toml`
+
+**Files:**
+- Create: `netlify.toml`
+
+**Step 1: Create `netlify.toml`**
+
+```toml
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
+```
+
+**Step 2: Commit**
+
+```bash
+git add netlify.toml
+git commit -m "chore: add netlify.toml for static export deployment"
+```
+
+---
+
+### Task 6: Production build verification
+
+**Step 1: Run build**
+
+Run: `npm run build`
+Expected: Exits with code 0. `out/` directory created. No TypeScript or Next.js errors.
+
+Common errors and fixes:
+- `Type error` in page.tsx → fix the reported line
+- `Image` import missing → ensure `import Image from 'next/image'` is present
+- Font download failure → check internet connection or replace Inter with a system font
+
+**Step 2: Verify output**
+
+Run: `ls out/`
+Expected: `index.html` and `_next/` directory present.
+
+**Step 3: Commit any fixes, then final commit**
+
+```bash
+git add -A
+git commit -m "chore: verify production build passes"
+```
+
+---
+
+### Summary of files created
+
+| File | Purpose |
+|---|---|
+| `package.json` | Dependencies + scripts |
+| `next.config.ts` | Static export + unoptimized images |
+| `tsconfig.json` | TypeScript config |
+| `postcss.config.mjs` | Tailwind v4 PostCSS plugin |
+| `app/globals.css` | CSS variables + Tailwind import + smooth scroll |
+| `app/layout.tsx` | Root layout, Inter font, metadata |
+| `app/page.tsx` | Full landing page (single file) |
+| `public/` | All 5 image assets |
+| `netlify.toml` | Netlify build config |
