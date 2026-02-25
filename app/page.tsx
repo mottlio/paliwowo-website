@@ -185,40 +185,68 @@ function Navbar({
 // ─── PhoneMockup ──────────────────────────────────────────────────────────────
 function PhoneMockup() {
   return (
-    <div className="relative mx-auto w-[260px] sm:w-[280px]">
-      <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-[var(--blue-500)]/60 bg-[var(--blue-900)] shadow-2xl">
-        {/* Status bar */}
-        <div className="flex items-center justify-between bg-[var(--blue-900)] px-5 pb-1 pt-3">
-          <span className="text-[10px] font-semibold text-[var(--blue-300)]">9:41</span>
-          <div className="h-3 w-16 rounded-full bg-[var(--blue-700)]" />
-          <div className="flex items-center gap-1">
-            <div className="h-2 w-2 rounded-full bg-[var(--blue-300)]" />
-            <div className="h-2 w-2 rounded-full bg-[var(--blue-300)]" />
+    <div className="relative mx-auto" style={{ width: '310px', paddingBottom: '40px' }}>
+      {/* Second phone — behind, offset to bottom-right */}
+      <div className="absolute left-8 top-8 z-0 w-[260px] opacity-70 sm:w-[280px]">
+        <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-[var(--blue-500)]/40 bg-[var(--blue-900)] shadow-xl">
+          <div className="flex items-center justify-between bg-[var(--blue-900)] px-5 pb-1 pt-3">
+            <span className="text-[10px] font-semibold text-[var(--blue-300)]">9:41</span>
+            <div className="h-3 w-16 rounded-full bg-[var(--blue-700)]" />
+            <div className="flex items-center gap-1">
+              <div className="h-2 w-2 rounded-full bg-[var(--blue-300)]" />
+              <div className="h-2 w-2 rounded-full bg-[var(--blue-300)]" />
+            </div>
+          </div>
+          <div className="relative h-[480px] w-full overflow-hidden">
+            <Image
+              src="/paliwowo_app_screenshot_2.PNG"
+              alt="paliwowo app second screen"
+              fill
+              className="object-cover object-top"
+            />
+          </div>
+          <div className="flex justify-center bg-[var(--blue-900)] py-2">
+            <div className="h-1 w-24 rounded-full bg-[var(--blue-500)]/60" />
           </div>
         </div>
-        {/* Screenshot */}
-        <div className="relative h-[480px] w-full overflow-hidden">
-          <Image
-            src="/paliwowo_app_screenshot_1.PNG"
-            alt="paliwowo app showing nearby fuel prices"
-            fill
-            className="object-cover object-top"
-          />
-        </div>
-        {/* Home indicator */}
-        <div className="flex justify-center bg-[var(--blue-900)] py-2">
-          <div className="h-1 w-24 rounded-full bg-[var(--blue-500)]/60" />
-        </div>
       </div>
-      {/* Floating price pill */}
-      <div className="absolute -right-6 top-16 rounded-2xl border border-[var(--yellow-500)]/30 bg-[var(--blue-700)] px-3 py-2 shadow-lg">
-        <p className="text-[10px] font-medium text-[var(--blue-300)]">Orlen</p>
-        <p className="text-base font-bold text-[var(--yellow-500)]">6.89 zł</p>
-      </div>
-      {/* Floating discount badge */}
-      <div className="absolute -left-6 bottom-24 rounded-2xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)] px-3 py-2 shadow-lg">
-        <p className="text-[10px] font-medium text-[var(--blue-300)]">Karta Żabki</p>
-        <p className="text-sm font-bold text-green-400">−0.20 zł/l</p>
+
+      {/* First phone — on top */}
+      <div className="relative z-10 w-[260px] sm:w-[280px]">
+        <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-[var(--blue-500)]/60 bg-[var(--blue-900)] shadow-2xl">
+          {/* Status bar */}
+          <div className="flex items-center justify-between bg-[var(--blue-900)] px-5 pb-1 pt-3">
+            <span className="text-[10px] font-semibold text-[var(--blue-300)]">9:41</span>
+            <div className="h-3 w-16 rounded-full bg-[var(--blue-700)]" />
+            <div className="flex items-center gap-1">
+              <div className="h-2 w-2 rounded-full bg-[var(--blue-300)]" />
+              <div className="h-2 w-2 rounded-full bg-[var(--blue-300)]" />
+            </div>
+          </div>
+          {/* Screenshot */}
+          <div className="relative h-[480px] w-full overflow-hidden">
+            <Image
+              src="/paliwowo_app_screenshot_1.PNG"
+              alt="paliwowo app showing nearby fuel prices"
+              fill
+              className="object-cover object-top"
+            />
+          </div>
+          {/* Home indicator */}
+          <div className="flex justify-center bg-[var(--blue-900)] py-2">
+            <div className="h-1 w-24 rounded-full bg-[var(--blue-500)]/60" />
+          </div>
+        </div>
+        {/* Floating price pill */}
+        <div className="absolute -right-6 top-16 rounded-2xl border border-[var(--yellow-500)]/30 bg-[var(--blue-700)] px-3 py-2 shadow-lg">
+          <p className="text-[10px] font-medium text-[var(--blue-300)]">Orlen</p>
+          <p className="text-base font-bold text-[var(--yellow-500)]">6.89 zł</p>
+        </div>
+        {/* Floating discount badge */}
+        <div className="absolute -left-6 bottom-24 rounded-2xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)] px-3 py-2 shadow-lg">
+          <p className="text-[10px] font-medium text-[var(--blue-300)]">Karta Żabki</p>
+          <p className="text-sm font-bold text-green-400">−0.20 zł/l</p>
+        </div>
       </div>
     </div>
   );
