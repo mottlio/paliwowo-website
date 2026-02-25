@@ -135,8 +135,8 @@ function Navbar({
           <Image
             src="/paliwowo_logo.png"
             alt="paliwowo logo"
-            width={36}
-            height={36}
+            width={54}
+            height={54}
             className="rounded-lg"
           />
           <span className="text-lg font-bold tracking-tight text-[var(--white)]">paliwowo</span>
