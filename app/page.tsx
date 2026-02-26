@@ -9,9 +9,9 @@ type Lang = 'en' | 'pl';
 // ─── Translations ─────────────────────────────────────────────────────────────
 const T = {
   en: {
-    heroTitle: 'Fuel prices and discounts nearby, powered by drivers',
+    heroTitle: 'The best fuel price near you — every time.',
     heroSubtitle:
-      'paliwowo helps drivers in Poland compare fuel prices nearby, including loyalty-card discounts. Add prices quickly via voice, photo, or manual update and help the whole community save money.',
+      'Prices and discounts across stations in your area, powered by smart estimates and drivers like you who search for a good deal and share it with others. Join in and help everyone save.',
     heroTrust: 'Launching soon in Poland.',
     heroCta1: 'Get the app',
     heroCta2: 'How it works',
@@ -42,9 +42,9 @@ const T = {
     footerCopy: '© paliwowo — coming soon',
   },
   pl: {
-    heroTitle: 'Ceny paliw i rabaty w Twojej okolicy, tworzone przez kierowców',
+    heroTitle: 'Najlepsze ceny paliw w Twojej okolicy — za każdym razem.',
     heroSubtitle:
-      'paliwowo pomaga kierowcom w Polsce porównywać ceny paliw w pobliżu, także z uwzględnieniem rabatów i kart lojalnościowych. Dodawaj ceny szybko głosem, zdjęciem lub ręcznie i pomóż całej społeczności oszczędzać.',
+      'Porównuj ceny i rabaty na stacjach w Twoim zasięgu dzięki inteligentnym prognozom i kierowcom takim jak Ty, którzy szukają okazji i dzielą się nimi z innymi. Dołącz do nas i pomóż wszystkim oszczędzać.',
     heroTrust: 'Już wkrótce w Polsce.',
     heroCta1: 'Pobierz aplikację',
     heroCta2: 'Jak to działa',
