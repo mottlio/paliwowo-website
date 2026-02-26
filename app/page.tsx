@@ -9,6 +9,7 @@ type Lang = 'en' | 'pl';
 // ─── Translations ─────────────────────────────────────────────────────────────
 const T = {
   en: {
+    navTagline: 'Fuel up cheaper — together!',
     heroTitle: 'Fuel prices and discounts nearby, powered by drivers',
     heroSubtitle:
       'paliwowo helps drivers in Poland compare fuel prices nearby, including loyalty-card discounts. Add prices quickly via voice, photo, or manual update and help the whole community save money.',
@@ -42,6 +43,7 @@ const T = {
     footerCopy: '© paliwowo — coming soon',
   },
   pl: {
+    navTagline: 'Tankujmy taniej — razem!',
     heroTitle: 'Ceny paliw i rabaty w Twojej okolicy, tworzone przez kierowców',
     heroSubtitle:
       'paliwowo pomaga kierowcom w Polsce porównywać ceny paliw w pobliżu, także z uwzględnieniem rabatów i kart lojalnościowych. Dodawaj ceny szybko głosem, zdjęciem lub ręcznie i pomóż całej społeczności oszczędzać.',
@@ -139,7 +141,17 @@ function Navbar({
             height={54}
             className="rounded-lg"
           />
-          <span className="text-lg font-bold tracking-tight text-[var(--white)]">paliwowo</span>
+          <div className="flex flex-col leading-tight">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--blue-300)]">
+              paliwowo
+            </span>
+            <span
+              className="text-[13px] leading-tight text-[var(--yellow-400)]"
+              style={{ fontFamily: 'var(--font-nunito)', fontWeight: 900, fontStyle: 'italic' }}
+            >
+              {t.navTagline}
+            </span>
+          </div>
         </a>
 
         <div className="flex items-center gap-3">
