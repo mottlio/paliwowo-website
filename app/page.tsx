@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-const SUPPORTED_LANGS = ['pl', 'en', 'uk'] as const;
+const SUPPORTED_LANGS = ['pl', 'en', 'ua'] as const;
 type Lang = (typeof SUPPORTED_LANGS)[number];
 
 const isLang = (value: unknown): value is Lang =>
@@ -78,7 +78,7 @@ const T = {
     footerTagline: 'Ceny paliw tworzone przez społeczność kierowców.',
     footerCopy: '© paliwowo — wkrótce',
   },
-  uk: {
+  ua: {
     heroTitle: 'Найкраща ціна на пальне поруч із вами — щоразу.',
     heroSubtitle:
       'Ціни та знижки на станціях у вашому районі, підсилені розумними прогнозами та водіями, як ви, які шукають вигідні пропозиції й діляться ними з іншими. Долучайтеся й допоможіть усім економити.',
@@ -134,7 +134,7 @@ function useLanguage(): [Lang, (l: Lang) => void] {
       .then((r) => r.json())
       .then((d: { country_code?: string }) => {
         const detected: Lang =
-          d?.country_code === 'PL' ? 'pl' : d?.country_code === 'UA' ? 'uk' : 'en';
+          d?.country_code === 'PL' ? 'pl' : d?.country_code === 'UA' ? 'ua' : 'en';
         setLangState(detected);
         document.documentElement.lang = detected;
         localStorage.setItem('lang', detected);
@@ -143,8 +143,8 @@ function useLanguage(): [Lang, (l: Lang) => void] {
         const browserLang = (navigator.language || '').toLowerCase();
         const fallback: Lang = browserLang.startsWith('pl')
           ? 'pl'
-          : browserLang.startsWith('uk')
-            ? 'uk'
+          : browserLang.startsWith('uk') || browserLang.startsWith('ua')
+            ? 'ua'
             : 'en';
         setLangState(fallback);
         document.documentElement.lang = fallback;
@@ -224,7 +224,8 @@ function Navbar({
                 aria-disabled="true"
                 className="cursor-not-allowed rounded-xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)]/40 px-3 py-1.5 text-xs font-medium text-[var(--blue-300)] opacity-60"
               >
-                {s} ({t.soonSuffix})
+                {s}
+                {s === 'Google Play' && ` (${t.soonSuffix})`}
               </button>
             ))}
           </div>
