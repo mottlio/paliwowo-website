@@ -141,12 +141,10 @@ function Navbar({
             height={54}
             className="rounded-lg"
           />
-          <div className="flex flex-col leading-tight">
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--blue-300)]">
-              paliwowo
-            </span>
+          <div className="flex items-baseline gap-2">
+            <span className="text-lg font-bold tracking-tight text-[var(--white)]">paliwowo</span>
             <span
-              className="text-[13px] leading-tight text-[var(--yellow-400)]"
+              className="text-base text-[var(--yellow-500)]"
               style={{ fontFamily: 'var(--font-nunito)', fontWeight: 900, fontStyle: 'italic' }}
             >
               {t.navTagline}
