@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-const SUPPORTED_LANGS = ['pl', 'en', 'ua'] as const;
+const SUPPORTED_LANGS = ['pl', 'en', 'ua', 'ru', 'ge'] as const;
 type Lang = (typeof SUPPORTED_LANGS)[number];
 
 const isLang = (value: unknown): value is Lang =>
@@ -111,6 +111,72 @@ const T = {
     footerTagline: 'Ціни на пальне для Польщі, які створює спільнота.',
     footerCopy: '© paliwowo — невдовзі',
   },
+  ru: {
+    heroTitle: 'Лучшая цена на топливо рядом с вами — каждый раз.',
+    heroSubtitle:
+      'Сравнивайте цены и скидки на станциях поблизости с помощью умных прогнозов и водителей вроде вас, которые ищут выгодные предложения и делятся ими с другими. Присоединяйтесь и помогите всем экономить.',
+    heroTrust: 'Сначала запускаемся в Варшаве. Скоро по всей Польше.',
+    heroCta1: 'Скачать приложение',
+    heroCta2: 'Как это работает',
+    f1Title: 'Сравнивайте ближайшие станции',
+    f1Body: 'Смотрите цены на топливо вокруг и быстро находите лучшие предложения.',
+    f2Title: 'Учитывайте скидки',
+    f2Body: 'Сравнивайте реальные цены с программами лояльности и акциями сетей.',
+    f3Title: 'Создано для быстрых обновлений',
+    f3Body: 'Добавляйте цены с минимальными действиями даже в пути.',
+    howTitle: 'Как это работает',
+    step1: 'Проверяйте цены рядом',
+    step2: 'Добавляйте или подтверждайте цену за секунды',
+    step3: 'Все экономят',
+    contribTitle: 'Станьте участником paliwowo',
+    contribBody:
+      'Присоединяйтесь к первым участникам и помогайте создавать самое полезное топливное сообщество в Польше.',
+    contribB1: 'Добавляйте цены с локальных станций',
+    contribB2: 'Улучшайте данные быстрыми исправлениями',
+    contribB3: 'Помогайте другим водителям принимать выгодные решения',
+    contribCta: 'Хочу участвовать',
+    ctaHeadline: 'Узнайте первыми о запуске paliwowo',
+    ctaPlaceholder: 'Ваш email',
+    ctaButton: 'Сообщите мне',
+    ctaSuccess: 'Вы в списке! Мы предупредим, когда paliwowo запустится.',
+    ctaPrivacy: 'Никакого спама. Можно отписаться в любой момент.',
+    soonSuffix: 'скоро',
+    footerTagline: 'Цены на топливо для Польши, созданные сообществом.',
+    footerCopy: '© paliwowo — скоро',
+  },
+  ge: {
+    heroTitle: 'საუკეთესო საწვავის ფასი შენს ახლოს — ყოველთვის.',
+    heroSubtitle:
+      'შეადარე ფასები და ფასდაკლებები შენს გარშემო მდებარე სადგურებზე ჭკვიანი პროგნოზებისა და შენსავით მძღოლების საშუალებით, რომლებიც პოულობენ კარგ შეთავაზებებს და უზიარებენ სხვებს. შემოგვიერთდი და დაეხმარე ყველას დაზოგვაში.',
+    heroTrust: 'პირველად ვიწყებთ ვარშავაში. მალე მთელ პოლონეთში.',
+    heroCta1: 'ჩამოტვირთე აპი',
+    heroCta2: 'როგორ მუშაობს',
+    f1Title: 'შეადარე ახლომდებარე სადგურები',
+    f1Body: 'იხილე საწვავის ფასები ირგვლივ და სწრაფად იპოვე უკეთესი შეთავაზებები.',
+    f2Title: 'გაითვალისწინე ფასდაკლებები',
+    f2Body: 'შეადარე რეალური ფასები ლოიალურობის პროგრამებსა და ქსელურ აქციებთან.',
+    f3Title: 'შექმნილია სწრაფი განახლებისთვის',
+    f3Body: 'დაამატე ფასები მინიმალური მოქმედებებით, თუნდაც გზაში.',
+    howTitle: 'როგორ მუშაობს',
+    step1: 'შეამოწმე ფასები ახლოს',
+    step2: 'დაამატე ან დაადასტურე ფასი წამებში',
+    step3: 'ყველა ზოგავს',
+    contribTitle: 'გახდი paliwowo-ს თანამშენი',
+    contribBody:
+      'შემოურთდი პირველ მონაწილეებს და დაეხმარე პოლონეთში ყველაზე სასარგებლო საწვავის საზოგადოებას.',
+    contribB1: 'დაამატე ფასები ადგილობრივი სადგურებიდან',
+    contribB2: 'გაუმჯობესე მონაცემები სწრაფი შესწორებებით',
+    contribB3: 'დაეხმარე სხვა მძღოლებს უკეთესი გადაწყვეტილებების მიღებაში',
+    contribCta: 'მინდა მონაწილეობა',
+    ctaHeadline: 'იყო პირველი, ვინც paliwowo-ს გაშვებას გაიგებს',
+    ctaPlaceholder: 'შენი ელფოსტა',
+    ctaButton: 'შემატყობინე',
+    ctaSuccess: 'სიაში ხარ! შეგატყობინებთ, როგორც კი paliwowo გაეშვება.',
+    ctaPrivacy: 'სპამი არ იქნება. ნებისმიერ დროს შეგიძლია გაუქმება.',
+    soonSuffix: 'მალე',
+    footerTagline: 'საწვავის ფასები პოლონეთისთვის, რომელსაც საზოგადოება ქმნის.',
+    footerCopy: '© paliwowo — მალე',
+  },
 } as const;
 
 type Translations = (typeof T)[Lang];
@@ -134,7 +200,15 @@ function useLanguage(): [Lang, (l: Lang) => void] {
       .then((r) => r.json())
       .then((d: { country_code?: string }) => {
         const detected: Lang =
-          d?.country_code === 'PL' ? 'pl' : d?.country_code === 'UA' ? 'ua' : 'en';
+          d?.country_code === 'PL'
+            ? 'pl'
+            : d?.country_code === 'UA'
+              ? 'ua'
+              : d?.country_code === 'RU'
+                ? 'ru'
+                : d?.country_code === 'GE'
+                  ? 'ge'
+                  : 'en';
         setLangState(detected);
         document.documentElement.lang = detected;
         localStorage.setItem('lang', detected);
@@ -145,7 +219,11 @@ function useLanguage(): [Lang, (l: Lang) => void] {
           ? 'pl'
           : browserLang.startsWith('uk') || browserLang.startsWith('ua')
             ? 'ua'
-            : 'en';
+            : browserLang.startsWith('ru')
+              ? 'ru'
+              : browserLang.startsWith('ge') || browserLang.startsWith('ka')
+                ? 'ge'
+                : 'en';
         setLangState(fallback);
         document.documentElement.lang = fallback;
         localStorage.setItem('lang', fallback);
