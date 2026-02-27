@@ -9,7 +9,7 @@ type Lang = 'en' | 'pl';
 // ─── Translations ─────────────────────────────────────────────────────────────
 const T = {
   en: {
-    navTagline: 'Fuel up cheaper — together!',
+    navTagline: 'Fuel up cheaper!',
     heroTitle: 'Fuel prices and discounts nearby, powered by drivers',
     heroSubtitle:
       'paliwowo helps drivers in Poland compare fuel prices nearby, including loyalty-card discounts. Add prices quickly via voice, photo, or manual update and help the whole community save money.',
@@ -43,7 +43,7 @@ const T = {
     footerCopy: '© paliwowo — coming soon',
   },
   pl: {
-    navTagline: 'Tankujmy taniej — razem!',
+    navTagline: 'Tankujmy taniej!',
     heroTitle: 'Ceny paliw i rabaty w Twojej okolicy, tworzone przez kierowców',
     heroSubtitle:
       'paliwowo pomaga kierowcom w Polsce porównywać ceny paliw w pobliżu, także z uwzględnieniem rabatów i kart lojalnościowych. Dodawaj ceny szybko głosem, zdjęciem lub ręcznie i pomóż całej społeczności oszczędzać.',
