@@ -275,7 +275,20 @@ function Navbar({
             className="rounded-lg"
           />
           <div className="flex items-baseline gap-2">
-            <span className="text-lg font-bold tracking-tight text-[var(--white)]">paliwowo</span>
+            <span
+              style={{
+                fontFamily: 'var(--font-fredoka)',
+                fontWeight: 700,
+                fontSize: '1.25rem',
+                letterSpacing: '-0.02em',
+                color: '#FFD700',
+              }}
+            >
+              paliw
+              <span style={{ color: '#FFF4BD' }}>o</span>
+              w
+              <span style={{ color: '#FFF4BD' }}>o</span>
+            </span>
             <span
               className="text-base text-[var(--yellow-500)]"
               style={{ fontFamily: 'var(--font-nunito)', fontWeight: 900, fontStyle: 'italic' }}

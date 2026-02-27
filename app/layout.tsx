@@ -1,8 +1,14 @@
 import type { Metadata } from 'next';
-import { Inter, Nunito } from 'next/font/google';
+import { Inter, Nunito, Fredoka } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin', 'latin-ext'] });
+const fredoka = Fredoka({
+  subsets: ['latin'],
+  weight: ['700'],
+  variable: '--font-fredoka',
+});
+
 const nunito = Nunito({
   subsets: ['latin', 'latin-ext'],
   weight: ['900'],
@@ -19,7 +25,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
-      <body className={`${nunito.variable} bg-[var(--blue-900)] antialiased`}>{children}</body>
+      <body className={`${fredoka.variable} ${nunito.variable} bg-[var(--blue-900)] antialiased`}>{children}</body>
     </html>
   );
 }
