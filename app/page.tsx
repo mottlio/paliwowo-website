@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -250,6 +250,71 @@ function useLanguage(): [Lang, (l: Lang) => void] {
   return [lang, setLang];
 }
 
+// ─── LangDropdown ─────────────────────────────────────────────────────────────
+function LangDropdown({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener('mousedown', onClickOutside);
+    return () => document.removeEventListener('mousedown', onClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className="flex items-center gap-1.5 rounded-xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)]/50 px-3 py-1.5 text-sm font-semibold text-[var(--yellow-500)] transition-all duration-150 hover:border-[var(--blue-500)]/70 hover:bg-[var(--blue-700)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)]"
+      >
+        {lang.toUpperCase()}
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className={`transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          role="listbox"
+          aria-label="Language"
+          className="absolute right-0 top-full z-10 mt-1.5 min-w-[72px] overflow-hidden rounded-xl border border-[var(--blue-500)]/40 bg-[var(--blue-900)] shadow-xl shadow-black/40"
+        >
+          {SUPPORTED_LANGS.map((l) => (
+            <button
+              key={l}
+              role="option"
+              aria-selected={lang === l}
+              onClick={() => { setLang(l); setOpen(false); }}
+              className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--yellow-500)] ${
+                lang === l
+                  ? 'bg-[var(--yellow-500)]/15 text-[var(--yellow-500)]'
+                  : 'text-[var(--blue-300)] hover:bg-[var(--blue-700)]/60 hover:text-[var(--white)]'
+              }`}
+            >
+              {l.toUpperCase()}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 function Navbar({
   lang,
@@ -299,26 +364,7 @@ function Navbar({
         </a>
 
         <div className="flex items-center gap-3">
-          <div
-            role="group"
-            aria-label="Language"
-            className="flex items-center gap-0.5 rounded-xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)]/50 p-1"
-          >
-            {SUPPORTED_LANGS.map((l) => (
-              <button
-                key={l}
-                onClick={() => setLang(l)}
-                aria-pressed={lang === l}
-                className={`rounded-lg px-3 py-1 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)] ${
-                  lang === l
-                    ? 'bg-[var(--yellow-500)] text-[var(--blue-900)]'
-                    : 'text-[var(--blue-300)] hover:text-[var(--white)]'
-                }`}
-              >
-                {l.toUpperCase()}
-              </button>
-            ))}
-          </div>
+          <LangDropdown lang={lang} setLang={setLang} />
 
           <div className="hidden items-center gap-2 sm:flex">
             {(['App Store', 'Google Play'] as const).map((s) => (
