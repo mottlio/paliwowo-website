@@ -13,7 +13,8 @@ const isLang = (value: unknown): value is Lang =>
 // ─── Translations ─────────────────────────────────────────────────────────────
 const T = {
   en: {
-    heroTitle: 'The best fuel price near you — every time.',
+    navTagline: 'Fuel up cheaper!',
+    heroTitle: 'Fuel prices and discounts nearby, powered by drivers',
     heroSubtitle:
       'Prices and discounts across stations in your area, powered by smart estimates and drivers like you who search for a good deal and share it with others. Join in and help everyone save.',
     heroTrust: 'Launching in Warsaw first. Rolling out across Poland soon.',
@@ -46,7 +47,8 @@ const T = {
     footerCopy: '© paliwowo — coming soon',
   },
   pl: {
-    heroTitle: 'Najlepsze ceny paliw w Twojej okolicy — za każdym razem.',
+    navTagline: 'Tankujmy taniej!',
+    heroTitle: 'Ceny paliw i rabaty w Twojej okolicy, tworzone przez kierowców',
     heroSubtitle:
       'Porównuj ceny i rabaty na stacjach w Twoim zasięgu dzięki inteligentnym prognozom i kierowcom takim jak Ty, którzy szukają okazji i dzielą się nimi z innymi. Dołącz do nas i pomóż wszystkim oszczędzać.',
     heroTrust: 'Startujemy w Warszawie. Już wkrótce w całej Polsce.',
@@ -108,6 +110,7 @@ const T = {
     ctaSuccess: 'Ви в списку! Повідомимо, щойно paliwowo запуститься.',
     ctaPrivacy: 'Без спаму. Можна відписатися будь-коли.',
     soonSuffix: 'незабаром',
+    navTagline: 'Заправляємось дешевше!',
     footerTagline: 'Ціни на пальне для Польщі, які створює спільнота.',
     footerCopy: '© paliwowo — невдовзі',
   },
@@ -141,6 +144,7 @@ const T = {
     ctaSuccess: 'Вы в списке! Мы предупредим, когда paliwowo запустится.',
     ctaPrivacy: 'Никакого спама. Можно отписаться в любой момент.',
     soonSuffix: 'скоро',
+    navTagline: 'Заправляемся дешевле!',
     footerTagline: 'Цены на топливо для Польши, созданные сообществом.',
     footerCopy: '© paliwowo — скоро',
   },
@@ -174,6 +178,7 @@ const T = {
     ctaSuccess: 'სიაში ხარ! შეგატყობინებთ, როგორც კი paliwowo გაეშვება.',
     ctaPrivacy: 'სპამი არ იქნება. ნებისმიერ დროს შეგიძლია გაუქმება.',
     soonSuffix: 'მალე',
+    navTagline: 'გავსებთ უფრო იაფად!',
     footerTagline: 'საწვავის ფასები პოლონეთისთვის, რომელსაც საზოგადოება ქმნის.',
     footerCopy: '© paliwowo — მალე',
   },
@@ -269,7 +274,15 @@ function Navbar({
             height={54}
             className="rounded-lg"
           />
-          <span className="text-lg font-bold tracking-tight text-[var(--white)]">paliwowo</span>
+          <div className="flex items-baseline gap-2">
+            <span className="text-lg font-bold tracking-tight text-[var(--white)]">paliwowo</span>
+            <span
+              className="text-base text-[var(--yellow-500)]"
+              style={{ fontFamily: 'var(--font-nunito)', fontWeight: 900, fontStyle: 'italic' }}
+            >
+              {t.navTagline}
+            </span>
+          </div>
         </a>
 
         <div className="flex items-center gap-3">
