@@ -4,7 +4,11 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-type Lang = 'en' | 'pl';
+const SUPPORTED_LANGS = ['pl', 'en', 'ua', 'ru', 'ge'] as const;
+type Lang = (typeof SUPPORTED_LANGS)[number];
+
+const isLang = (value: unknown): value is Lang =>
+  typeof value === 'string' && SUPPORTED_LANGS.includes(value as Lang);
 
 // ─── Translations ─────────────────────────────────────────────────────────────
 const T = {
@@ -12,8 +16,8 @@ const T = {
     navTagline: 'Fuel up cheaper!',
     heroTitle: 'Fuel prices and discounts nearby, powered by drivers',
     heroSubtitle:
-      'paliwowo helps drivers in Poland compare fuel prices nearby, including loyalty-card discounts. Add prices quickly via voice, photo, or manual update and help the whole community save money.',
-    heroTrust: 'Launching soon in Poland.',
+      'Prices and discounts across stations in your area, powered by smart estimates and drivers like you who search for a good deal and share it with others. Join in and help everyone save.',
+    heroTrust: 'Launching in Warsaw first. Rolling out across Poland soon.',
     heroCta1: 'Get the app',
     heroCta2: 'How it works',
     f1Title: 'Compare nearby stations',
@@ -46,8 +50,8 @@ const T = {
     navTagline: 'Tankujmy taniej!',
     heroTitle: 'Ceny paliw i rabaty w Twojej okolicy, tworzone przez kierowców',
     heroSubtitle:
-      'paliwowo pomaga kierowcom w Polsce porównywać ceny paliw w pobliżu, także z uwzględnieniem rabatów i kart lojalnościowych. Dodawaj ceny szybko głosem, zdjęciem lub ręcznie i pomóż całej społeczności oszczędzać.',
-    heroTrust: 'Już wkrótce w Polsce.',
+      'Porównuj ceny i rabaty na stacjach w Twoim zasięgu dzięki inteligentnym prognozom i kierowcom takim jak Ty, którzy szukają okazji i dzielą się nimi z innymi. Dołącz do nas i pomóż wszystkim oszczędzać.',
+    heroTrust: 'Startujemy w Warszawie. Już wkrótce w całej Polsce.',
     heroCta1: 'Pobierz aplikację',
     heroCta2: 'Jak to działa',
     f1Title: 'Porównuj stacje w pobliżu',
@@ -76,36 +80,162 @@ const T = {
     footerTagline: 'Ceny paliw tworzone przez społeczność kierowców.',
     footerCopy: '© paliwowo — wkrótce',
   },
+  ua: {
+    heroTitle: 'Найкраща ціна на пальне поруч із вами — щоразу.',
+    heroSubtitle:
+      'Ціни та знижки на станціях у вашому районі, підсилені розумними прогнозами та водіями, як ви, які шукають вигідні пропозиції й діляться ними з іншими. Долучайтеся й допоможіть усім економити.',
+    heroTrust: 'Спершу стартуємо у Варшаві. Незабаром по всій Польщі.',
+    heroCta1: 'Завантажити застосунок',
+    heroCta2: 'Як це працює',
+    f1Title: 'Порівнюйте станції поруч',
+    f1Body: 'Переглядайте ціни на пальне поблизу й швидко знаходьте вигідніші пропозиції.',
+    f2Title: 'Враховуйте знижки',
+    f2Body: 'Порівнюйте реальні ціни з урахуванням програм лояльності та акцій мереж.',
+    f3Title: 'Створено для швидких оновлень',
+    f3Body: 'Додавайте ціни з мінімальними діями навіть у дорозі.',
+    howTitle: 'Як це працює',
+    step1: 'Перевіряйте ціни поруч',
+    step2: 'Додавайте або підтверджуйте ціну за кілька секунд',
+    step3: 'Усі економлять',
+    contribTitle: 'Станьте співтворцем paliwowo',
+    contribBody:
+      'Долучайтеся до перших учасників і допоможіть створити найкориснішу паливну спільноту в Польщі.',
+    contribB1: 'Додавайте ціни з локальних станцій',
+    contribB2: 'Покращуйте дані швидкими виправленнями',
+    contribB3: 'Допомагайте іншим водіям приймати вигідні рішення',
+    contribCta: 'Хочу долучитися',
+    ctaHeadline: 'Будьте першими, хто дізнається про запуск paliwowo',
+    ctaPlaceholder: 'Ваша електронна адреса',
+    ctaButton: 'Повідомте мене',
+    ctaSuccess: 'Ви в списку! Повідомимо, щойно paliwowo запуститься.',
+    ctaPrivacy: 'Без спаму. Можна відписатися будь-коли.',
+    soonSuffix: 'незабаром',
+    footerTagline: 'Ціни на пальне для Польщі, які створює спільнота.',
+    footerCopy: '© paliwowo — невдовзі',
+  },
+  ru: {
+    heroTitle: 'Лучшая цена на топливо рядом с вами — каждый раз.',
+    heroSubtitle:
+      'Сравнивайте цены и скидки на станциях поблизости с помощью умных прогнозов и водителей вроде вас, которые ищут выгодные предложения и делятся ими с другими. Присоединяйтесь и помогите всем экономить.',
+    heroTrust: 'Сначала запускаемся в Варшаве. Скоро по всей Польше.',
+    heroCta1: 'Скачать приложение',
+    heroCta2: 'Как это работает',
+    f1Title: 'Сравнивайте ближайшие станции',
+    f1Body: 'Смотрите цены на топливо вокруг и быстро находите лучшие предложения.',
+    f2Title: 'Учитывайте скидки',
+    f2Body: 'Сравнивайте реальные цены с программами лояльности и акциями сетей.',
+    f3Title: 'Создано для быстрых обновлений',
+    f3Body: 'Добавляйте цены с минимальными действиями даже в пути.',
+    howTitle: 'Как это работает',
+    step1: 'Проверяйте цены рядом',
+    step2: 'Добавляйте или подтверждайте цену за секунды',
+    step3: 'Все экономят',
+    contribTitle: 'Станьте участником paliwowo',
+    contribBody:
+      'Присоединяйтесь к первым участникам и помогайте создавать самое полезное топливное сообщество в Польше.',
+    contribB1: 'Добавляйте цены с локальных станций',
+    contribB2: 'Улучшайте данные быстрыми исправлениями',
+    contribB3: 'Помогайте другим водителям принимать выгодные решения',
+    contribCta: 'Хочу участвовать',
+    ctaHeadline: 'Узнайте первыми о запуске paliwowo',
+    ctaPlaceholder: 'Ваш email',
+    ctaButton: 'Сообщите мне',
+    ctaSuccess: 'Вы в списке! Мы предупредим, когда paliwowo запустится.',
+    ctaPrivacy: 'Никакого спама. Можно отписаться в любой момент.',
+    soonSuffix: 'скоро',
+    footerTagline: 'Цены на топливо для Польши, созданные сообществом.',
+    footerCopy: '© paliwowo — скоро',
+  },
+  ge: {
+    heroTitle: 'საუკეთესო საწვავის ფასი შენს ახლოს — ყოველთვის.',
+    heroSubtitle:
+      'შეადარე ფასები და ფასდაკლებები შენს გარშემო მდებარე სადგურებზე ჭკვიანი პროგნოზებისა და შენსავით მძღოლების საშუალებით, რომლებიც პოულობენ კარგ შეთავაზებებს და უზიარებენ სხვებს. შემოგვიერთდი და დაეხმარე ყველას დაზოგვაში.',
+    heroTrust: 'პირველად ვიწყებთ ვარშავაში. მალე მთელ პოლონეთში.',
+    heroCta1: 'ჩამოტვირთე აპი',
+    heroCta2: 'როგორ მუშაობს',
+    f1Title: 'შეადარე ახლომდებარე სადგურები',
+    f1Body: 'იხილე საწვავის ფასები ირგვლივ და სწრაფად იპოვე უკეთესი შეთავაზებები.',
+    f2Title: 'გაითვალისწინე ფასდაკლებები',
+    f2Body: 'შეადარე რეალური ფასები ლოიალურობის პროგრამებსა და ქსელურ აქციებთან.',
+    f3Title: 'შექმნილია სწრაფი განახლებისთვის',
+    f3Body: 'დაამატე ფასები მინიმალური მოქმედებებით, თუნდაც გზაში.',
+    howTitle: 'როგორ მუშაობს',
+    step1: 'შეამოწმე ფასები ახლოს',
+    step2: 'დაამატე ან დაადასტურე ფასი წამებში',
+    step3: 'ყველა ზოგავს',
+    contribTitle: 'გახდი paliwowo-ს თანამშენი',
+    contribBody:
+      'შემოურთდი პირველ მონაწილეებს და დაეხმარე პოლონეთში ყველაზე სასარგებლო საწვავის საზოგადოებას.',
+    contribB1: 'დაამატე ფასები ადგილობრივი სადგურებიდან',
+    contribB2: 'გაუმჯობესე მონაცემები სწრაფი შესწორებებით',
+    contribB3: 'დაეხმარე სხვა მძღოლებს უკეთესი გადაწყვეტილებების მიღებაში',
+    contribCta: 'მინდა მონაწილეობა',
+    ctaHeadline: 'იყო პირველი, ვინც paliwowo-ს გაშვებას გაიგებს',
+    ctaPlaceholder: 'შენი ელფოსტა',
+    ctaButton: 'შემატყობინე',
+    ctaSuccess: 'სიაში ხარ! შეგატყობინებთ, როგორც კი paliwowo გაეშვება.',
+    ctaPrivacy: 'სპამი არ იქნება. ნებისმიერ დროს შეგიძლია გაუქმება.',
+    soonSuffix: 'მალე',
+    footerTagline: 'საწვავის ფასები პოლონეთისთვის, რომელსაც საზოგადოება ქმნის.',
+    footerCopy: '© paliwowo — მალე',
+  },
 } as const;
 
-type Translations = (typeof T)['en'] | (typeof T)['pl'];
+type Translations = (typeof T)[Lang];
 
 // ─── useLanguage ──────────────────────────────────────────────────────────────
 function useLanguage(): [Lang, (l: Lang) => void] {
   const [lang, setLangState] = useState<Lang>('en');
 
   useEffect(() => {
-    const saved = localStorage.getItem('lang') as Lang | null;
-    if (saved === 'pl' || saved === 'en') {
+    const saved = localStorage.getItem('lang');
+    if (isLang(saved)) {
       setLangState(saved);
       document.documentElement.lang = saved;
       return;
     }
+
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 1800);
+
     fetch('https://ipapi.co/json/', { signal: ctrl.signal })
       .then((r) => r.json())
       .then((d: { country_code?: string }) => {
-        const detected: Lang = d?.country_code === 'PL' ? 'pl' : 'en';
+        const detected: Lang =
+          d?.country_code === 'PL'
+            ? 'pl'
+            : d?.country_code === 'UA'
+              ? 'ua'
+              : d?.country_code === 'RU'
+                ? 'ru'
+                : d?.country_code === 'GE'
+                  ? 'ge'
+                  : 'en';
         setLangState(detected);
         document.documentElement.lang = detected;
+        localStorage.setItem('lang', detected);
       })
       .catch(() => {
-        const fallback: Lang = navigator.language.toLowerCase().startsWith('pl') ? 'pl' : 'en';
+        const browserLang = (navigator.language || '').toLowerCase();
+        const fallback: Lang = browserLang.startsWith('pl')
+          ? 'pl'
+          : browserLang.startsWith('uk') || browserLang.startsWith('ua')
+            ? 'ua'
+            : browserLang.startsWith('ru')
+              ? 'ru'
+              : browserLang.startsWith('ge') || browserLang.startsWith('ka')
+                ? 'ge'
+                : 'en';
         setLangState(fallback);
         document.documentElement.lang = fallback;
+        localStorage.setItem('lang', fallback);
       })
       .finally(() => clearTimeout(timer));
+
+    return () => {
+      ctrl.abort();
+      clearTimeout(timer);
+    };
   }, []);
 
   const setLang = (l: Lang) => {
@@ -158,7 +288,7 @@ function Navbar({
             aria-label="Language"
             className="flex items-center gap-0.5 rounded-xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)]/50 p-1"
           >
-            {(['pl', 'en'] as Lang[]).map((l) => (
+            {SUPPORTED_LANGS.map((l) => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
@@ -182,7 +312,8 @@ function Navbar({
                 aria-disabled="true"
                 className="cursor-not-allowed rounded-xl border border-[var(--blue-500)]/40 bg-[var(--blue-700)]/40 px-3 py-1.5 text-xs font-medium text-[var(--blue-300)] opacity-60"
               >
-                {s} ({t.soonSuffix})
+                {s}
+                {s === 'Google Play' && ` (${t.soonSuffix})`}
               </button>
             ))}
           </div>
