@@ -15,7 +15,7 @@ const isLang = (value: unknown): value is Lang =>
 const T = {
   en: {
     navTagline: 'Fuel up cheaper!',
-    heroTitle: 'Fuel prices and discounts nearby, powered by drivers',
+    heroTitle: 'Fuel prices and discounts nearby',
     heroSubtitle:
       'Prices and discounts across stations in your area, powered by smart estimates and drivers like you who search for a good deal and share it with others. Join in and help everyone save.',
     heroTrust: 'Launching in Warsaw first. Rolling out across Poland soon.',
@@ -49,7 +49,7 @@ const T = {
   },
   pl: {
     navTagline: 'Tankujmy taniej!',
-    heroTitle: 'Ceny paliw i rabaty w Twojej okolicy, tworzone przez kierowców',
+    heroTitle: 'Ceny paliw i rabaty w Twojej okolicy',
     heroSubtitle:
       'Porównuj ceny i rabaty na stacjach w Twoim zasięgu dzięki inteligentnym prognozom i kierowcom takim jak Ty, którzy szukają okazji i dzielą się nimi z innymi. Dołącz do nas i pomóż wszystkim oszczędzać.',
     heroTrust: 'Startujemy w Warszawie. Już wkrótce w całej Polsce.',

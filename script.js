@@ -1,6 +1,6 @@
 const T = {
   en: {
-    heroTitle: 'Fuel prices and discounts nearby, powered by drivers',
+    heroTitle: 'Fuel prices and discounts nearby',
     heroSub: 'paliwowo helps drivers in Poland compare fuel prices nearby, including loyalty-card discounts. Add prices quickly via voice, photo, or manual update and help the whole community save money.',
     f1Title: 'Compare nearby stations',
     f1Body: 'See fuel prices around you and quickly identify better deals.',
@@ -17,7 +17,7 @@ const T = {
     footer: '© paliwowo — coming soon'
   },
   pl: {
-    heroTitle: 'Ceny paliw i rabaty w Twojej okolicy, tworzone przez kierowców',
+    heroTitle: 'Ceny paliw i rabaty w Twojej okolicy',
     heroSub: 'paliwowo pomaga kierowcom w Polsce porównywać ceny paliw w pobliżu, także z uwzględnieniem rabatów i kart lojalnościowych. Dodawaj ceny szybko głosem, zdjęciem lub ręcznie i pomóż całej społeczności oszczędzać.',
     f1Title: 'Porównuj stacje w pobliżu',
     f1Body: 'Sprawdzaj ceny paliw dookoła i szybko znajdź korzystniejszą opcję.',
