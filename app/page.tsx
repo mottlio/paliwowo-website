@@ -638,9 +638,30 @@ function FinalCTA({
   submitted: boolean;
   setSubmitted: (v: boolean) => void;
 }) {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) setSubmitted(true);
+    if (!email.trim()) return;
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/.netlify/functions/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <section id="cta" className="bg-[var(--blue-700)] py-24">
@@ -667,11 +688,15 @@ function FinalCTA({
             />
             <button
               type="submit"
-              className="rounded-2xl bg-[var(--yellow-500)] px-6 py-3 text-sm font-bold text-[var(--blue-900)] transition-all duration-150 hover:bg-[var(--yellow-300)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)]"
+              disabled={loading}
+              className="rounded-2xl bg-[var(--yellow-500)] px-6 py-3 text-sm font-bold text-[var(--blue-900)] transition-all duration-150 hover:bg-[var(--yellow-300)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)] disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {t.ctaButton}
+              {loading ? '...' : t.ctaButton}
             </button>
           </form>
+          {error && (
+            <p className="mt-3 text-xs text-red-400">{error}</p>
+          )}
         )}
         <p className="mt-4 text-xs text-[var(--blue-300)]">{t.ctaPrivacy}</p>
         <div className="mt-10 flex justify-center gap-3">
