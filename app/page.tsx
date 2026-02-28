@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import screenshot1 from '@/assets/screenshot_1.PNG';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 const SUPPORTED_LANGS = ['pl', 'en', 'ua', 'ru', 'ge'] as const;
@@ -429,7 +430,7 @@ function PhoneMockup() {
           {/* Screenshot */}
           <div className="relative h-[480px] w-full overflow-hidden">
             <Image
-              src="/paliwowo_app_screenshot_1.PNG"
+              src={screenshot1}
               alt="paliwowo app showing nearby fuel prices"
               fill
               className="object-cover object-top"
