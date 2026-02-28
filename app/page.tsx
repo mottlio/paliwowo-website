@@ -674,29 +674,31 @@ function FinalCTA({
             <p className="text-sm font-medium text-green-300">{t.ctaSuccess}</p>
           </div>
         ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
-          >
-            <input
-              type="email"
-              required
-              placeholder={t.ctaPlaceholder}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 rounded-2xl border border-[var(--blue-500)]/50 bg-[var(--blue-900)]/60 px-4 py-3 text-sm text-[var(--white)] placeholder-[var(--blue-300)] focus:border-[var(--yellow-500)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow-500)]/30"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-2xl bg-[var(--yellow-500)] px-6 py-3 text-sm font-bold text-[var(--blue-900)] transition-all duration-150 hover:bg-[var(--yellow-300)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)] disabled:opacity-60 disabled:cursor-not-allowed"
+          <>
+            <form
+              onSubmit={handleSubmit}
+              className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
             >
-              {loading ? '...' : t.ctaButton}
-            </button>
-          </form>
-          {error && (
-            <p className="mt-3 text-xs text-red-400">{error}</p>
-          )}
+              <input
+                type="email"
+                required
+                placeholder={t.ctaPlaceholder}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 rounded-2xl border border-[var(--blue-500)]/50 bg-[var(--blue-900)]/60 px-4 py-3 text-sm text-[var(--white)] placeholder-[var(--blue-300)] focus:border-[var(--yellow-500)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow-500)]/30"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="rounded-2xl bg-[var(--yellow-500)] px-6 py-3 text-sm font-bold text-[var(--blue-900)] transition-all duration-150 hover:bg-[var(--yellow-300)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow-500)] disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {loading ? '...' : t.ctaButton}
+              </button>
+            </form>
+            {error && (
+              <p className="mt-3 text-xs text-red-400">{error}</p>
+            )}
+          </>
         )}
         <p className="mt-4 text-xs text-[var(--blue-300)]">{t.ctaPrivacy}</p>
         <div className="mt-10 flex justify-center gap-3">
