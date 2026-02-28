@@ -468,9 +468,9 @@ function Hero({ t }: { t: Translations }) {
         className="object-cover object-center"
       />
       {/* Dark blue gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[var(--blue-900)]/95 via-[var(--blue-700)]/85 to-[var(--blue-500)]/60" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--blue-900)]/80 via-[var(--blue-700)]/65 to-[var(--blue-500)]/40" />
       {/* Vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(8,28,64,0.75)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(8,28,64,0.50)_100%)]" />
       <div className="relative mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">
         <div className="flex flex-col gap-6">
           <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-[var(--white)] sm:text-5xl lg:text-[3.25rem]">
